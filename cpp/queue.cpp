@@ -29,11 +29,13 @@ public:
         if (rear == nullptr)
         {
             front = rear = n;
+            cout << "enqueue = " << rear << endl;
         }
         else
         {
             rear->next = n;
-            rear = n;            
+            rear = n;
+            cout << "enqueue = " << rear << endl;
         }
     }
 
@@ -41,8 +43,10 @@ public:
     {
         if (empty())
             return;
+        cout << "dequeue = " << front << endl;
         Node* t = front;
         front = front->next;
+
 
         if (front == nullptr)
             rear = nullptr;
@@ -80,6 +84,5 @@ int main()
     cout << q.peek() << '\n';
     q.dequeue();
     cout << q.peek() << '\n';
-    
 
 }
