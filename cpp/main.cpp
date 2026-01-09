@@ -16,16 +16,19 @@ class Stack
 {
 public:
     Node* top;
-    
+
     Stack() : top(nullptr)
     {
 
     }
+
+    bool empty() const { return top == nullptr; }
+
     unsigned int pop()
     {
         if (!top)
             return 0;
-        int a = top->value;
+        unsigned int a = top->value;
         Node* t = top;
         top = top->bot;
         delete t;
@@ -39,11 +42,18 @@ public:
         top = node;
     }
 
+    ~Stack()
+    {
+        while (!empty())
+            pop();
+        
+    }
+
     void printAll()
     {
         if (!top)
-        return;
-        
+            return;
+
         cout << top->value << " <- top" << endl;
         
         for (Node* t = top->bot; t != nullptr; t = t->bot)
@@ -52,15 +62,6 @@ public:
         }
     }
 
-    ~Stack()
-    {
-        while (top)
-        {
-            Node* t = top;
-            top = top->bot;
-            delete t;
-        }
-    }
 };
 
 
@@ -77,7 +78,5 @@ int main()
     stack.pop();
     cout << ".........\n";
     stack.printAll();
-
-    cout << sizeof(Stack) << " " << sizeof(stack);
 
 }

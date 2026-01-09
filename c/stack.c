@@ -20,7 +20,6 @@ unsigned int pop(struct Stack* stack)
     struct Node* t = stack->top;
     int a = t->val;
     stack->top = t->bot;
-    printf("popped: %p(%u)\n", (void*)t, t->val);
     free(t);
     return a;
 }
@@ -31,7 +30,6 @@ void push(struct Stack* stack, int a)
     node->val = a;
     node->bot = stack->top;
     stack->top = node;
-    printf("pushed: %p(%u)\n", (void*)stack->top, stack->top->val);
 }
 
 void printAll(struct Stack* stack)
@@ -39,11 +37,11 @@ void printAll(struct Stack* stack)
     if (!stack->top)
         return;
 
-    printf("printing:\n%p(%u) <- top\n", (void*)stack->top, stack->top->val);
+    printf("%u <- top\n", stack->top->val);
 
     for (struct Node* t = stack->top->bot; t != NULL; t = t->bot)
     {
-        printf("%p(%u)\n", (void*)t, t->val);
+        printf("%u\n", t->val);
     }
 }
 
@@ -53,7 +51,6 @@ void cleanup(struct Stack* stack)
     {
         struct Node* t = stack->top;
         stack->top = stack->top->bot;
-        printf("freeing: %p(%u)\n", (void*)t, t->val);
         free(t);
     }
 }
@@ -67,19 +64,13 @@ int main(void)
     push(&stack, 600);
     push(&stack, 700);
 
-    printf("\n");
-    
     printAll(&stack);
 
     printf("\n");
 
-    pop(&stack);
-
-    printf("\n");
+    printf("popped: %u\n\n", pop(&stack));
 
     printAll(&stack);
-
-    printf("\n");
 
     cleanup(&stack);
 }

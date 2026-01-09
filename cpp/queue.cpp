@@ -39,19 +39,19 @@ public:
         }
     }
 
-    void dequeue()
+    int dequeue()
     {
         if (empty())
             return;
         cout << "dequeue = " << front << endl;
         Node* t = front;
+        int a = front->val;
         front = front->next;
-
-
         if (front == nullptr)
             rear = nullptr;
         
         delete t;
+        return a;
     }
 
     int peek() const 
@@ -79,10 +79,6 @@ int main()
     q.enqueue(50);
     q.enqueue(60);
 
-    cout << q.peek() << '\n';
-    q.dequeue();
-    cout << q.peek() << '\n';
-    q.dequeue();
-    cout << q.peek() << '\n';
+    cout << q.dequeue();
 
 }

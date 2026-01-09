@@ -22,11 +22,13 @@ public:
 
     }
 
+    bool empty() const { return top == nullptr; }
+
     unsigned int pop()
     {
         if (!top)
             return 0;
-        int a = top->value;
+        unsigned int a = top->value;
         Node* t = top;
         top = top->bot;
         delete t;
@@ -42,12 +44,9 @@ public:
 
     ~Stack()
     {
-        while (top)
-        {
-            Node* t = top;
-            top = top->bot;
-            delete t;
-        }
+        while (!empty())
+            pop();
+        
     }
 
     void printAll()
