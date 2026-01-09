@@ -1,0 +1,4 @@
+compile to obj        = cl /c /EHsc lib.cpp
+
+link the dll          = link /DLL /OUT:lib.dll lib.obj
+compile and link main = cl /EHsc main.cpp lib.lib

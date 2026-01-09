@@ -1,0 +1,3 @@
+cl /LD lib.c /Fe:lib.dll
+
+cl main.c lib.lib

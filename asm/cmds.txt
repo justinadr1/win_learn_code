@@ -1,0 +1,10 @@
+
+args.asm = cl main.obj /link kernel32.lib msvcrt.lib legacy_stdio_definitions.lib
+
+low_level_syscalls.asm = link main.obj kernel32.lib ntdll.lib /subsystem:console /entry:main
+
+nasm -f win64 main.asm -o main.obj
+
+cl main.obj /link kernel32.lib ucrt.lib vcruntime.lib legacy_stdio_definitions.lib
+
+link main.obj /subsystem:console /entry:main kernel32.lib ucrt.lib msvcrt.lib legacy_stdio_definitions.lib
