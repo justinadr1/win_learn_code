@@ -4,79 +4,82 @@
 #include <string>
 using namespace std;
 
-class Node
+class node
 {
 public:
-    unsigned int value;
-    Node* bot;
-    Node(int x) : value(x), bot(nullptr) {}
+    char x[6];
+    int a;
+    char y[7];
+    char z[9];
+    int b;
+    node(int v) : a(v), b(0)  
+    {
+        int q = 1;
+        for (int i = 0; i < sizeof(x); i++)
+            x[i] = q++;
+        for (int i = 0; i < sizeof(y); i++)
+            y[i] = q++;
+        for (int i = 0; i < sizeof(z); i++)
+            z[i] = q++;
+    }
+
+    node(char* a, char* b, int v) : a(v) 
+    {
+        for (int i = 0; i < sizeof(x); i++)
+            x[i] = a[i];
+        for (int i = 0; i < sizeof(y); i++)
+            y[i] = b[i];
+    }
+    
 };
-
-class Stack
-{
-public:
-    Node* top;
-
-    Stack() : top(nullptr)
-    {
-
-    }
-
-    bool empty() const { return top == nullptr; }
-
-    unsigned int pop()
-    {
-        if (!top)
-            return 0;
-        unsigned int a = top->value;
-        Node* t = top;
-        top = top->bot;
-        delete t;
-        return a;
-    }
-
-    void push(int x)
-    {
-        Node* node = new Node(x); 
-        node->bot = top;
-        top = node;
-    }
-
-    ~Stack()
-    {
-        while (!empty())
-            pop();
-        
-    }
-
-    void printAll()
-    {
-        if (!top)
-            return;
-
-        cout << top->value << " <- top" << endl;
-        
-        for (Node* t = top->bot; t != nullptr; t = t->bot)
-        {
-            cout << t->value << endl;
-        }
-    }
-
-};
-
 
 int main() 
 {
-    Stack stack;
+    node* buffer[] = { new node("revers", "enginee", 0xaabb), new node("binary", "exploit", 0xccdd), 
+        new node("malwre", "devlopm", 0xeeff) };
+    int s = 42;
+    
+    cout << sizeof(node) << endl;
+    cout << &s << endl << endl; 
 
-    stack.push(400);
-    stack.push(500);
-    stack.push(600);
+    cout << &buffer[0] << endl;
+    cout << &buffer[1] << endl;
+    cout << &buffer[2] << endl << endl;
+    
+    cout << buffer[0] << endl;
+    cout << buffer[1] << endl;
+    cout << buffer[2] << endl << endl;
 
-    stack.printAll();
 
-    stack.pop();
-    cout << ".........\n";
-    stack.printAll();
+    for (int i = 0; i < sizeof(buffer) / sizeof(buffer[0]); i++)
+    {
+        cout << "x = " << &buffer[i]->x << endl;
+        cout << "a = " << &buffer[i]->a << endl;
+        cout << "y = " << &buffer[i]->y << endl;
+        cout << "z = " << &buffer[i]->z << endl;
+        cout << "b = " << &buffer[i]->b << endl << endl;
+    }
+    
+    cout << buffer[2]->a << endl;
+    
+    (*(buffer + 2))->a = 10;
+
+    cout << buffer[2]->a << endl;
+
+
+    for (int i = 0; i < sizeof(buffer) / sizeof(buffer[0]); i++)
+    {
+        delete buffer[i];
+    }
+   
+    cout << endl;
+
+
+    node nodes[] = { node(0xf1122), node(0xf3344), node(0xf4455), node(0xf6677) };
+
+    cout << &nodes[0] << endl;
+    cout << &nodes[1] << endl;
+    cout << &nodes[2] << endl;
+    cout << &nodes[3] << endl;
 
 }

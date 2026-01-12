@@ -42,13 +42,6 @@ public:
         top = node;
     }
 
-    ~Stack()
-    {
-        while (!empty())
-            pop();
-        
-    }
-
     void printAll()
     {
         if (!top)
@@ -62,6 +55,12 @@ public:
         }
     }
 
+    ~Stack()
+    {
+        while (!empty())
+            pop();
+        
+    }
 };
 
 
