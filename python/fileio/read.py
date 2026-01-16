@@ -1,29 +1,29 @@
-lines = []          # list of lines (each line is a list of words)
-current_line = []   # current line (list of words)
-word = bytearray()  # buffer for the current word
+lines = []          
+current_line = []  
+word = bytearray() 
 
 with open("code.bin", "rb") as f:
     while True:
         b = f.read(1)
-        if not b:  # EOF
-            if word:  # add last word if file ends without semicolon
+        if not b:  # end of file
+            if word: 
                 current_line.append(word.decode('utf-8', errors='ignore'))
             if current_line:
                 lines.append(current_line)
             break
 
         byte_val = b[0]
-        if byte_val == 0x20:  # space
+        if byte_val == 0x20: 
             if word:
                 current_line.append(word.decode('utf-8', errors='ignore'))
                 word.clear()
-        elif byte_val == 0x3B:  # semicolon → end of line
+        elif byte_val == 0x3B: 
             if word:
                 current_line.append(word.decode('utf-8', errors='ignore'))
                 word.clear()
             if current_line:
                 lines.append(current_line)
-                current_line = []  # start a new line
+                current_line = [] 
         else:
             word.append(byte_val)
 

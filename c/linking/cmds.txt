@@ -1,3 +1,13 @@
-cl /LD lib.c /Fe:lib.dll
 
-cl main.c lib.lib
+
+cl /c dynamicapi.c
+link /DLL dynamicapi.obj user32.lib
+
+
+cl main.c dynamicapi.lib
+
+
+
+cl /c staticapi.c
+lib staticapi.obj user32.lib
+cl main.c staticapi.lib

@@ -1,8 +1,17 @@
 #include <iostream>
-#include "lib.h"
+#include <string>
+#include "dynamicapi.h"
 
-int main()
+
+int main(int argc, char* argv[])
 {
-    std::cout << add(4, 5) << std::endl;
+    std::cout << "your message: ";
+    
+    std::string message;
+
+    std::cin >> message;
+
+    _dynamicFunction(message.c_str());
+
     return 0;
 }

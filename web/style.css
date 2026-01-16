@@ -1,0 +1,45 @@
+
+
+
+body {
+    background-color: rgb(232, 224, 216);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.mysteryWrapper {
+    display: inline-block;
+    transition: transform 10s ease;
+}
+
+.mysteryWrapper:hover {
+    transform: translate(1000px, 50px) scale(1.5);
+}
+
+.mysteryObject {
+    background-color: blue;
+    color: white;
+    padding: 30px 20px;
+    transition: background-color 10s ease;
+    transition: color 10s ease;
+}
+
+.mysteryWrapper:hover .mysteryObject {
+    background-color: green;
+    color: black;
+    animation: spin 2s linear infinite;
+}   
+
+
+
+.epicButton {
+    width: 100px;
+    height: 80px;
+    background: purple;
+}
+.epicButton:hover {
+    animation: spin 2s linear infinite;
+
+}

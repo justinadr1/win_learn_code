@@ -1,4 +1,14 @@
-compile to obj        = cl /c /EHsc lib.cpp
+/MD = links against DLL version of the microsoft C runtime
+    instead of embedding the C runtime, link the vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll at runtime
 
-link the dll          = link /DLL /OUT:lib.dll lib.obj
-compile and link main = cl /EHsc main.cpp lib.lib
+cl /LD dynamicapi.cpp user32.lib
+or
+cl /c dynamicapi.cpp
+link /DLL dynamicapi.obj user32.lib
+
+cl main.cpp dynamicapi.lib
+
+
+cl /c static.cpp
+lib static.obj user32.lib
+cl main.cpp static.lib

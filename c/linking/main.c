@@ -1,8 +1,16 @@
 #include <stdio.h>
-#include "lib.h"
+#include "staticapi.h"
+
 
 int main(void)
 {
-    printf("%d\n", add(4 ,5));
+    printf("your message: ");
+    char string[32];
+
+    scanf("%31s", string);
+    
+    _staticFunction(string);
+
+
     return 0;
 }

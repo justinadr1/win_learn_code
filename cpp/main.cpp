@@ -1,85 +1,63 @@
 #include <iostream>
+#include <string>
 #include <thread>
 #include <chrono>
-#include <string>
+#include <windows.h>
 using namespace std;
 
-class node
+struct _epicClass
 {
-public:
-    char x[6];
-    int a;
-    char y[7];
-    char z[9];
-    int b;
-    node(int v) : a(v), b(0)  
+    void _epicMethod()
     {
-        int q = 1;
-        for (int i = 0; i < sizeof(x); i++)
-            x[i] = q++;
-        for (int i = 0; i < sizeof(y); i++)
-            y[i] = q++;
-        for (int i = 0; i < sizeof(z); i++)
-            z[i] = q++;
+        int a = 0xaabb;
+        cout << "A = " << &a << " = " << hex << a << endl;
+        cout << "Epic Method ID : " << this_thread::get_id() << endl;     
     }
-
-    node(char* a, char* b, int v) : a(v) 
-    {
-        for (int i = 0; i < sizeof(x); i++)
-            x[i] = a[i];
-        for (int i = 0; i < sizeof(y); i++)
-            y[i] = b[i];
-    }
-    
 };
+
+void _epicThread()
+{
+    int y = 0x3040;
+    cout << "Y = " << &y << " = " << hex << y << endl;
+    cout << "Epic Thread ID: " << this_thread::get_id() << endl;
+}
+
+void _awesomeThread()
+{
+    this_thread::sleep_for(chrono::seconds(1));
+    int z = 0x5060;
+    cout << "Z = " << &z << " = " << hex << z << endl;
+    cout << "Awesome Thread ID: " << this_thread::get_id() << endl;
+}
 
 int main() 
 {
-    node* buffer[] = { new node("revers", "enginee", 0xaabb), new node("binary", "exploit", 0xccdd), 
-        new node("malwre", "devlopm", 0xeeff) };
-    int s = 42;
+    int x = 0x1020;
+    cout << "X = " << &x << " = " << hex << x << endl;
+    cout << "Main Thread ID: " << this_thread::get_id() << endl;
+
+    this_thread::sleep_for(chrono::milliseconds(1500));
+    thread epic(_epicThread);
     
-    cout << sizeof(node) << endl;
-    cout << &s << endl << endl; 
-
-    cout << &buffer[0] << endl;
-    cout << &buffer[1] << endl;
-    cout << &buffer[2] << endl << endl;
+    this_thread::sleep_for(chrono::milliseconds(1500));
+    thread awesome(_awesomeThread);
     
-    cout << buffer[0] << endl;
-    cout << buffer[1] << endl;
-    cout << buffer[2] << endl << endl;
-
-
-    for (int i = 0; i < sizeof(buffer) / sizeof(buffer[0]); i++)
-    {
-        cout << "x = " << &buffer[i]->x << endl;
-        cout << "a = " << &buffer[i]->a << endl;
-        cout << "y = " << &buffer[i]->y << endl;
-        cout << "z = " << &buffer[i]->z << endl;
-        cout << "b = " << &buffer[i]->b << endl << endl;
-    }
+    this_thread::sleep_for(chrono::milliseconds(1500));
+    _epicClass _epicObject;
+    thread method(&_epicClass::_epicMethod, &_epicObject);
+    // or: thread method([&_epicObject]() { _epicObject._epicMethod(); });
     
-    cout << buffer[2]->a << endl;
     
-    (*(buffer + 2))->a = 10;
 
-    cout << buffer[2]->a << endl;
+    epic.join();
+    cout << "Epic Thread Finished\n";
 
-
-    for (int i = 0; i < sizeof(buffer) / sizeof(buffer[0]); i++)
-    {
-        delete buffer[i];
-    }
-   
-    cout << endl;
+    awesome.join();
+    cout << "Awesome Thread Finishsed\n";
+    
+    method.join();
+    cout << "Epic Method Thread Finished\n";
 
 
-    node nodes[] = { node(0xf1122), node(0xf3344), node(0xf4455), node(0xf6677) };
-
-    cout << &nodes[0] << endl;
-    cout << &nodes[1] << endl;
-    cout << &nodes[2] << endl;
-    cout << &nodes[3] << endl;
-
+    return 0;
 }
