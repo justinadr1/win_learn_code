@@ -1,17 +1,14 @@
 #include <iostream>
 
-void fun(int a)
+void fib(int a, int b, int i)
 {
-    int i = a;
-
-    if (i > 0)
-    {
-        fun(--i);
-        std::cout << i << std::endl;
-    }
+    if (i == 11)
+        return;
+    std::cout << a << std::endl;
+    fib(b, a + b, ++i);
 }
 
 int main()
 {
-    fun(5);
+    fib(0, 1, 0);
 }

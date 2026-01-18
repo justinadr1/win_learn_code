@@ -33,7 +33,7 @@ public:
         buckets = new Node*[table_size];
         for (size_t i = 0; i < table_size; i++)
             buckets[i] = nullptr;
-    }
+    }   
 
     ~HashMap()
     {

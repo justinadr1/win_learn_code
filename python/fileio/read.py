@@ -5,7 +5,7 @@ word = bytearray()
 with open("code.bin", "rb") as f:
     while True:
         b = f.read(1)
-        if not b:  # end of file
+        if not b:
             if word: 
                 current_line.append(word.decode('utf-8', errors='ignore'))
             if current_line:

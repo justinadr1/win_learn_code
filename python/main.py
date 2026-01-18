@@ -1,38 +1,11 @@
-lines = []          # list of lines (each line is a list of words)
-current_line = []   # current line (list of words)
-word = bytearray()  # buffer for the current word
 
-with open("code.bin", "rb") as f:
-    while True:
-        b = f.read(1)
-        if not b:  # EOF
-            if word:  # add last word if file ends without semicolon
-                current_line.append(word.decode('utf-8', errors='ignore'))
-            if current_line:
-                lines.append(current_line)
-            break
 
-        byte_val = b[0]
-        if byte_val == 0x20:  # space
-            if word:
-                current_line.append(word.decode('utf-8', errors='ignore'))
-                word.clear()
-        elif byte_val == 0x3B:  # semicolon → end of line
-            if word:
-                current_line.append(word.decode('utf-8', errors='ignore'))
-                word.clear()
-            if current_line:
-                lines.append(current_line)
-                current_line = []  # start a new line
-        else:
-            word.append(byte_val)
+file = open("log.txt", "r")
+ln = file.readlines()
 
-# Print results
-for i, line in enumerate(lines):
-    print(f"Line {i+1}: {line}")
+e = enumerate(ln)
 
-a = 0
-if lines[0][0] == "set":
-    a = int(lines[0][3])
+print(type(e))
 
-print(a)
+for l in ln:
+    print(l)

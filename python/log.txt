@@ -1,0 +1,2 @@
+[1] database authorized
+[2] database passwd used

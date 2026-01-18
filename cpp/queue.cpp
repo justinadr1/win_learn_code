@@ -1,84 +1,109 @@
+
 #include <iostream>
-#include <thread>
 using namespace std;
 
 struct Node
 {
     int val;
     Node* next;
-    Node(int v) : val(v), next(nullptr) {}
+    Node(int x) : val(x), next(nullptr) {}
 };
 
-class Queue
+struct Queue
 {
-public:
     Node* front;
     Node* rear;
-
     Queue() : front(nullptr), rear(nullptr) {}
 
-    bool empty() const
+    bool empty()
     {
         return front == nullptr;
     }
 
-    void enqueue(int v)
+    void enqueue(int x)
     {
-        Node* n = new Node(v);
-        
-        if (rear == nullptr)
+        Node* node = new Node(x);
+        if (!rear)
         {
-            front = rear = n;
-            cout << "enqueue = " << rear << endl;
-        }
+            front = rear = node;
+        }    
         else
         {
-            rear->next = n;
-            rear = n;
-            cout << "enqueue = " << rear << endl;
+            rear->next = node;
+            rear = node;
         }
     }
 
-    int dequeue()
+    int dequeu()
     {
-        if (empty())
-            return;
-        cout << "dequeue = " << front << endl;
+        if (!front)
+            return 0;
         Node* t = front;
-        int a = front->val;
+        int a = t->val;
         front = front->next;
-        if (front == nullptr)
+        if (!front)
             rear = nullptr;
-        
         delete t;
         return a;
     }
 
-    int peek() const 
+    void printAll()
     {
         if (empty())
-            throw std::runtime_error("queue empty");
+        {
+            std::cout << "queue empty\n";
+            return;
+        }
+        std::cout << front->val << " <- front\n";
+        Node* curr = front->next;
+        while (curr)
+        {
+            std::cout << curr->val;
+            std::cout << (curr->next != nullptr ? "\n" : " <- rear\n");
+            curr = curr->next;
+        }
+    }
+
+    int peek()
+    {
+        if (empty())
+            return 0;
         return front->val;
     }
+
 
     ~Queue()
     {
         while (!empty())
-            dequeue();
+            dequeu();
     }
 
 };
 
 
-int main() 
+int main()
 {
+    Queue line;
+
+    line.enqueue(400);
+    line.printAll();
+    std::cout << std::endl;
     
-    Queue q;
-
-    q.enqueue(40);
-    q.enqueue(50);
-    q.enqueue(60);
-
-    cout << q.dequeue();
-
+    line.enqueue(600);
+    line.printAll();
+    std::cout << std::endl;
+    
+    line.enqueue(800);
+    line.printAll();
+    std::cout << std::endl;
+    
+    line.dequeu();
+    line.printAll();
+    std::cout << std::endl;
+    
+    line.dequeu();
+    line.printAll();
+    
+    line.dequeu();
+    line.printAll();
 }

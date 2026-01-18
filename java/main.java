@@ -5,15 +5,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        
-        Scanner scan = new Scanner(System.in);
+        int x = 10;
 
-        System.out.print(": ");
-
-        String input = scan.nextLine();
-
-        System.out.print(input);
-    
+        System.out.println(x + 5);  
     }
 }
 

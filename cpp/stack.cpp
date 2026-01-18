@@ -17,10 +17,7 @@ class Stack
 public:
     Node* top;
 
-    Stack() : top(nullptr)
-    {
-
-    }
+    Stack() : top(nullptr) {}
 
     bool empty() const { return top == nullptr; }
 
@@ -42,7 +39,7 @@ public:
         top = node;
     }
 
-    void printAll()
+    void printStack()
     {
         if (!top)
             return;
@@ -72,10 +69,9 @@ int main()
     stack.push(500);
     stack.push(600);
 
-    stack.printAll();
+    stack.printStack();
 
     stack.pop();
-    cout << ".........\n";
-    stack.printAll();
+    stack.printStack();
 
 }
