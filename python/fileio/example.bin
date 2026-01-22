@@ -1,3 +1,0 @@
-type      isinstance   issubclass
-id        dir          vars
-help      callable

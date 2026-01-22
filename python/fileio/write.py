@@ -1,2 +1,2 @@
-with open("example.bin", "w", encoding="utf-8") as f:
-    f.write("\xA1\xB1")
+with open("code.bin", "w", encoding="utf-8") as f:
+    f.write("set w 0x42")

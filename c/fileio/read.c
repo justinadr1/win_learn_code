@@ -1,138 +1,101 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <string.h>
 
-#define MAX_WORD_LEN 256
+#define MAX_TOKEN_LEN 64
+#define MAX_TOKENS    16
+#define MAX_LINES     64
 
-// Struct to hold a line of words
 typedef struct {
-    char **words;   // array of strings
-    int word_count; // number of words
+    char **tokens;   /* array of strings */
+    int count;
 } Line;
 
-// Function to read all lines from a binary file
-// Returns an array of Line structs, sets *line_count
-Line* read_lines(const char *filename, int *line_count_out) {
-    FILE *f = fopen(filename, "rb");
-    if (!f) {
+/* Allocate a new line */
+Line line_create(void)
+{
+    Line line;
+    line.count = 0;
+    line.tokens = malloc(sizeof(char *) * MAX_TOKENS);
+    return line;
+}
+
+/* Add a token to a line */
+void line_add_token(Line *line, const char *text)
+{
+    if (line->count >= MAX_TOKENS)
+        return;
+
+    line->tokens[line->count] = malloc(strlen(text) + 1);
+    strcpy(line->tokens[line->count], text);
+    line->count++;
+}
+
+/* Free a line */
+void line_free(Line *line)
+{
+    for (int i = 0; i < line->count; i++)
+        free(line->tokens[i]);
+
+    free(line->tokens);
+}
+
+int main(void)
+{
+    FILE *file = fopen("code.bin", "r");
+    if (!file) {
         perror("Failed to open file");
-        *line_count_out = 0;
-        return NULL;
+        return 1;
     }
 
-    Line *lines = NULL;
-    int lines_capacity = 0;
+    Line lines[MAX_LINES];
     int line_count = 0;
 
-    char word_buf[MAX_WORD_LEN];
-    int word_len = 0;
-
-    Line current_line;
-    current_line.words = NULL;
-    current_line.word_count = 0;
-    int words_capacity = 0;
+    lines[line_count] = line_create();
 
     int c;
-    while ((c = fgetc(f)) != EOF) 
-    {
-        if (c == 0x20) 
-        {  
-            if (word_len > 0) 
-            {
-                word_buf[word_len] = '\0';
-                if (words_capacity == current_line.word_count) {
-                    words_capacity = words_capacity ? words_capacity * 2 : 4;
-                    current_line.words = realloc(current_line.words, words_capacity * sizeof(char*));
-                }
-                current_line.words[current_line.word_count++] = strdup(word_buf);
-                word_len = 0;
+    char token[MAX_TOKEN_LEN];
+    int token_len = 0;
+
+    while ((c = fgetc(file)) != EOF) {
+
+        if (c == ' ' || c == ';') {
+
+            if (token_len > 0) {
+                token[token_len] = '\0';
+                line_add_token(&lines[line_count], token);
+                token_len = 0;
             }
-        } 
-        else if (c == 0x3B)
-        {  
-            if (word_len > 0) {
-                word_buf[word_len] = '\0';
-                if (words_capacity == current_line.word_count) 
-                {
-                    words_capacity = words_capacity ? words_capacity * 2 : 4;
-                    current_line.words = realloc(current_line.words, words_capacity * sizeof(char*));
-                }
-                current_line.words[current_line.word_count++] = strdup(word_buf);
-                word_len = 0;
+
+            if (c == ';') {
+                line_count++;
+                if (line_count >= MAX_LINES)
+                    break;
+                lines[line_count] = line_create();
             }
-            if (current_line.word_count > 0) {
-                if (lines_capacity == line_count) 
-                {
-                    lines_capacity = lines_capacity ? lines_capacity * 2 : 4;
-                    lines = realloc(lines, lines_capacity * sizeof(Line));
-                }
-                lines[line_count++] = current_line;
-                current_line.words = NULL;
-                current_line.word_count = 0;
-                words_capacity = 0;
-            }
-        } 
-        else 
-        {
-            if (word_len < MAX_WORD_LEN - 1) 
-            {
-                word_buf[word_len++] = (char)c;
-            }
+        }
+        else if (!isspace((unsigned char)c)) {
+            if (token_len < MAX_TOKEN_LEN - 1)
+                token[token_len++] = (char)c;
         }
     }
 
-    if (word_len > 0) 
-    {
-        word_buf[word_len] = '\0';
-        if (words_capacity == current_line.word_count) 
-        {
-            words_capacity = words_capacity ? words_capacity * 2 : 4;
-            current_line.words = realloc(current_line.words, words_capacity * sizeof(char*));
-        }
-        current_line.words[current_line.word_count++] = strdup(word_buf);
-    }
-    if (current_line.word_count > 0) {
-        if (lines_capacity == line_count) {
-            lines_capacity = lines_capacity ? lines_capacity * 2 : 4;
-            lines = realloc(lines, lines_capacity * sizeof(Line));
-        }
-        lines[line_count++] = current_line;
-    }
+    fclose(file);
 
-    fclose(f);
-    *line_count_out = line_count;
-    return lines;
-}
-
-void free_lines(Line *lines, int line_count) 
-{
+    /* ---- Print result ---- */
     for (int i = 0; i < line_count; i++) {
-        for (int j = 0; j < lines[i].word_count; j++) 
-        {
-            free(lines[i].words[j]);
-        }
-        free(lines[i].words);
-    }
-    free(lines);
-}
-
-int main() 
-{
-    int line_count;
-    Line *lines = read_lines("code.bin", &line_count);
-    if (!lines) return 1;
-
-
-    for (int i = 0; i < line_count; i++) 
-    {
-        printf("Line %d:", i + 1);
-        for (int j = 0; j < lines[i].word_count; j++) 
-        {
-            printf(" %s", lines[i].words[j]);
+        printf("line %d: ", i + 1);
+        for (int j = 0; j < lines[i].count; j++) {
+            if (j > 0) printf(", ");
+            printf("%s", lines[i].tokens[j]);
         }
         printf("\n");
     }
 
-    free_lines(lines, line_count);
+    /* ---- Cleanup ---- */
+    for (int i = 0; i < line_count; i++)
+        line_free(&lines[i]);
+
     return 0;
 }

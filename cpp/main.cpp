@@ -9,7 +9,7 @@ public:
     int value;
     Node* next;
     Node(const std::string& k, int v) : key(k), value(v), next(nullptr) {}
-};  
+};
 
 class Map
 {
@@ -22,7 +22,7 @@ private:
         table_size = size;
         buckets = new Node*[table_size];
         for (size_t i = 0; i < table_size; i++)
-            buckets[i] = nullptr;       
+            buckets[i] = nullptr;
     }
 
     ~Map()
@@ -124,11 +124,10 @@ private:
 
 int main()
 {
-    
+
     Node* x = new Node("Fuck", 4);
     Node* y = new Node("Chat", 5);
     Node* z = new Node("GPT", 6);
-    
 
     Node** nodes = new Node*[3];
 

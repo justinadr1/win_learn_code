@@ -5,9 +5,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        int x = 10;
+        int x[] = {4, 5, 6}; 
 
-        System.out.println(x + 5);  
+        System.out.println(x.length);  
     }
 }
 

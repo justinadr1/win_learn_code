@@ -26,6 +26,7 @@ with open("code.bin", "rb") as f:
                 current_line = [] 
         else:
             word.append(byte_val)
+            print(word)
 
 # Print results
 for i, line in enumerate(lines):

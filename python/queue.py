@@ -1,14 +1,14 @@
-
 class Node:
     def __init__(self, x):
         self.val = x
         self.next = None
 
+
 class Queue:
     def __init__(self):
         self.front = None
         self.rear = None
-    
+
     def empty(self):
         return self.front is None
 
@@ -19,7 +19,7 @@ class Queue:
         else:
             self.rear.next = node
             self.rear = node
-    
+
     def dequeue(self):
         if self.empty():
             print("Queue is empty")
@@ -30,7 +30,7 @@ class Queue:
         if not self.front:
             self.rear = None
         return val
-    
+
     def peek(self):
         if self.empty():
             return None
@@ -40,9 +40,9 @@ class Queue:
         if self.empty():
             print("Queue empty")
             return
-        
+
         print(f"{self.front.val} <- front")
-    
+
         curr = self.front.next
         while curr:
             if not curr.next:
@@ -50,8 +50,6 @@ class Queue:
             else:
                 print(curr.val)
             curr = curr.next
-        
-
 
 
 line = Queue()
@@ -75,5 +73,3 @@ print()
 x = line.dequeue()
 line.print_all()
 print()
-
-
