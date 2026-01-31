@@ -1,39 +1,19 @@
-lines = []          
-current_line = []  
-word = bytearray() 
+class FileLogger:
+    def __init__(self, filename):
+        self.filename = filename
+        self.file = None
 
-with open("code.bin", "rb") as f:
-    while True:
-        b = f.read(1)
-        if not b:
-            if word: 
-                current_line.append(word.decode('utf-8', errors='ignore'))
-            if current_line:
-                lines.append(current_line)
-            break
+    def __enter__(self):
+        print("Opening file")
+        self.file = open(self.filename, "r")
+        return self.file
 
-        byte_val = b[0]
-        if byte_val == 0x20: 
-            if word:
-                current_line.append(word.decode('utf-8', errors='ignore'))
-                word.clear()
-        elif byte_val == 0x3B: 
-            if word:
-                current_line.append(word.decode('utf-8', errors='ignore'))
-                word.clear()
-            if current_line:
-                lines.append(current_line)
-                current_line = [] 
-        else:
-            word.append(byte_val)
-            print(word)
+    def __exit__(self, exc_type, exc_value, traceback):
+        print("Closing file")
+        self.file.close()
+        return False
 
-# Print results
-for i, line in enumerate(lines):
-    print(f"Line {i+1}: {line}")
 
-a = 0
-if lines[0][0] == "set":
-    a = int(lines[0][3])
+with FileLogger("log.txt") as f:  # f becomes whatever __enter__ returns
+    print(f.read())
 
-print(a)

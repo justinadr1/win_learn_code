@@ -3,8 +3,6 @@
 #include <iostream>
 #include <string>
 
-#pragma comment(lib, "ws2_32.lib")
-
 constexpr const char* SERVER_IP = "127.0.0.1";
 constexpr const char* PORT      = "8888";
 constexpr int BUFFER_SIZE       = 512;

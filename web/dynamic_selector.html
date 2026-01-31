@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Dynamic Page Loader</title>
+    <style>
+      .page { 
+        display: none; 
+      }
+      .active { 
+        display: 
+        block; 
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>Dynamic Page Loader</h1>
+
+    <select id="pageSelector">
+      <option value="">-- Choose a page --</option>
+      <option value="home">Home</option>
+      <option value="about">About</option>
+      <option value="contact">Contact</option>
+    </select>
+    
+    <div id="home" class="page">
+      <h2>Home Page</h2>
+      <p>Welcome to the home page!</p>
+    </div>
+
+    <div id="about" class="page">
+      <h2>About Page</h2>
+      <p>This is the about page.</p>
+    </div>
+
+    <div id="contact" class="page">
+      <h2>Contact Page</h2>
+      <p>Contact us at example@example.com</p>
+    </div>
+
+    <script>
+      const selector = document.getElementById('pageSelector');
+  
+      selector.addEventListener('change', () => {
+        const value = selector.value;
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        if (value) {
+            document.getElementById(value).classList.add('active');
+        }
+      });
+    </script>
+
+  </body>
+</html>

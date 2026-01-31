@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Dynamic HTML with Queries</title>
+        <style>
+            body { 
+                font-family: Arial, sans-serif; 
+                padding: 20px; 
+            }
+            .highlight {
+                color: orange; 
+                font-weight: bold; 
+            }
+        </style>
+    </head>
+    <body>
+
+        <h1 id="greeting">Hello!</h1>
+        <p id="message">This content can change based on query parameters.</p>
+
+        <script>
+            const params = new URLSearchParams(window.location.search);
+
+            const name = params.get('name') || 'Guest';
+            const color = params.get('color') || 'black';
+            const page = params.get('page') || 'home';
+
+            const greetingEl = document.getElementById('greeting');
+            greetingEl.textContent = `Hello, ${name}!`;
+            greetingEl.style.color = color;
+
+            
+            const messageEl = document.getElementById('message');
+            if (page === 'home') {
+                messageEl.innerHTML = `Welcome to the <span class="highlight">Home Page</span>.`;
+            } else if (page === 'about') {
+                messageEl.innerHTML = `This is the <span class="highlight">About Page</span>.`;
+            } else if (page === 'contact') {
+                messageEl.innerHTML = `Reach us on the <span class="highlight">Contact Page</span>.`;
+            } else {
+                messageEl.innerHTML = `Unknown page.`;
+            }   
+        </script>
+
+    </body>
+</html>

@@ -2,19 +2,20 @@
 #include <ws2tcpip.h>
 #include <iostream>
 #include <stdexcept>
+#include <thread>
 
 constexpr const char* PORT = "8888";
 constexpr int BUFFER_SIZE = 512;
 
-class WinSock 
+class WinSock
 {
 public:
-    WinSock() 
+    WinSock()
     {
         if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
             throw std::runtime_error("WSAStartup failed");
     }
-    ~WinSock() 
+    ~WinSock()
     {
         WSACleanup();
     }
@@ -22,9 +23,29 @@ private:
     WSADATA wsa{};
 };
 
+void handle_client(SOCKET client_sock)
+{
+    char buffer[BUFFER_SIZE];
+    int recv_size;
+
+    std::cout << "[+] Client thread started\n";
+
+    while ((recv_size = recv(client_sock, buffer, BUFFER_SIZE - 1, 0)) > 0)
+    {
+        buffer[recv_size] = '\0';
+        std::cout << "Client: " << buffer << '\n';
+
+        // Echo back
+        send(client_sock, buffer, recv_size, 0);
+    }
+
+    std::cout << "[-] Client disconnected\n";
+    closesocket(client_sock);
+}
+
 int main()
 {
-    try 
+    try
     {
         WinSock winsock;
 
@@ -44,33 +65,26 @@ int main()
 
         freeaddrinfo(res);
 
-        if (listen(listen_sock, 1) == SOCKET_ERROR)
+        if (listen(listen_sock, SOMAXCONN) == SOCKET_ERROR)
             throw std::runtime_error("Listen failed");
 
         std::cout << "Server listening on port " << PORT << "...\n";
 
-        SOCKET client_sock = accept(listen_sock, nullptr, nullptr);
-        if (client_sock == INVALID_SOCKET)
-            throw std::runtime_error("Accept failed");
-
-        std::cout << "Client connected!\n";
-
-        char buffer[BUFFER_SIZE];
-        int recv_size;
-        
-        while ((recv_size = recv(client_sock, buffer, BUFFER_SIZE - 1, 0)) > 0) 
+        while (true)
         {
-            buffer[recv_size] = '\0';
-            std::cout << "Client: " << buffer << '\n';
-            send(client_sock, buffer, recv_size, 0);
+            SOCKET client_sock = accept(listen_sock, nullptr, nullptr);
+            if (client_sock == INVALID_SOCKET)
+            {
+                std::cerr << "Accept failed\n";
+                continue;
+            }
+
+            std::thread(handle_client, client_sock).detach();
         }
 
-        std::cout << "Client disconnected\n";
-
-        closesocket(client_sock);
         closesocket(listen_sock);
     }
-    catch (const std::exception& e) 
+    catch (const std::exception& e)
     {
         std::cerr << "Error: " << e.what() << '\n';
         return 1;

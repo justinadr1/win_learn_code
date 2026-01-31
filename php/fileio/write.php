@@ -1,14 +1,12 @@
 <?php
 
-$handle = fopen("log.txt", "r");
+$handle = fopen("log.txt", "a");
 if ($handle) {
     echo "File opened successfully.\n";
 } else {
     echo "Failed to open file.";
 }
 
-$content = fread($handle, 100);
-
-echo $content;
+fwrite($handle, "\n[3] database learnweb added users table");
 
 fclose($handle);

@@ -1,4 +1,0 @@
-; dynamic.def
-LIBRARY dynamic.dll
-EXPORTS
-    _myDynamicFunction

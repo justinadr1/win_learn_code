@@ -34,7 +34,6 @@ int main()
 
         if (c == ' ' || c == ';') 
         {
-
             if (!token.empty()) 
             {
                 if (lines.back().tokens.size() < MAX_TOKENS)
