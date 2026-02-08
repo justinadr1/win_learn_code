@@ -1,28 +1,22 @@
 #include <windows.h>
 #include <stdio.h>
 
-DWORD WINAPI WorkerThread(LPVOID param) 
+void WorkerThread() 
 {
-    (void)param;
-
-    printf("Worker Thread Running...\n");
-
-    return 0;
+    printf("Worker thread id: %d\n", GetCurrentThreadId());
 }
 
 int main(void) 
 {
     HANDLE thread;
 
-    printf("Main Thread Starting\n");
+    printf("Main thread id: %d\n", GetCurrentThreadId());
 
     thread = CreateThread(NULL, 0, WorkerThread, NULL, 0, NULL);
 
     WaitForSingleObject(thread, INFINITE);
-
+    
     CloseHandle(thread);
-    printf("Worker Thread Finished\n");
-
 
     return 0;
 }

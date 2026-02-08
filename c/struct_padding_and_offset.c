@@ -23,7 +23,6 @@ int main(void)
     int offset_bufferC = (int)( (char*)&node->bufferC - (char*)node );
     int offset_Y = (int)( (char*)&node->y - (char*)node );
     
-
     printf("bufferA(%i) = offset(%u) = %p\n", sizeof(node->bufferA), offset_bufferA, &node->bufferA);
     printf("bufferB(%i) = offset(%u) = %p\n", sizeof(node->bufferB), offset_bufferB, &node->bufferB);
     printf("X(%i)       = offset(%u) = %p\n", sizeof(node->x), offset_X, &node->x);
@@ -31,6 +30,8 @@ int main(void)
     printf("Y(%i)       = offset(%u) = %p\n",  sizeof(node->y),offset_Y, &node->y);
 
     free(node);
+
+    // ==============================================================================
 
     struct Node nodem = { "abcdef", "abcde", 0xabcdef, "abcdefghi", 1.5f };
     
