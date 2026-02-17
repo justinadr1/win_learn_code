@@ -1,5 +1,4 @@
 set y 5;
 set x 4;
-
-
-get x + y;
+get z x + y;
+out z;

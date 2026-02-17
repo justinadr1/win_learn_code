@@ -1,11 +1,14 @@
 <html>
     <head>
-
+        <script src="script.js"></script>
+        
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        
         <table>
             <tr>
-                <th> Course </th>    
+                <th> Course </th>
                 <th> Grade </th>
             </tr>
             <tr>
@@ -13,13 +16,65 @@
                 <td> 4.0 </td>
             </tr>
             <tr>
-                <td> Software Reverse Engineering </td>
-                <td> 4.0 </td>    
+                <td> Organic Chemistry Synthesis </td>
+                <td> 3.9 </td>    
             </tr>
             <tr>
-                <td> Organic Chemistry Synthesis </td>
-                <td> 3.9 </td>
+                <td> Software Reverse Engineering </td>
+                <td id="grade"> 4.0 </td>    
+            </tr>
+            <tr>
+                <td> <button onclick="clicked()"> Click me </button> </td>
+                <td> <p id="clicked"> </p> </td>    
             </tr>
         </table>
+        <br>
+        <button onclick="mysteryButton()"> Mystery button </button>
+        <br> <br>
+        <button onclick="goToWiki()"> Go to Wiki </button>
+        <br> <br>
+        <div class="mysteryWrapper">
+            <div class="mysteryObject"> Hover me </div>
+        </div>
+        <br> <br>
+        <button class="epicButton" onclick="epicButton()"> Epic button </button> 
+        <br> <br>
+        <form>
+            <fieldset>
+                <label for="username"> Username: </label>
+                <input type="text" id ="username" name="username"> <br> 
+                <br>
+
+                <label for="email"> Email: </label>
+                <input type="email" id="email" name="email" required> <br>
+                <br>
+
+                <label for="gender"> Gender: </label> <br>
+                <label for="male"> Male </label>
+                <input type="radio" id="male" name="gender" value="male"> <br>
+                <label for="female"> Female </label>
+                <input type="radio" id="female" name="gender" value="female"> <br>
+                <br>
+
+                <label for="favorite"> Favorite Color: </label>
+                <select>
+                    <option value="red"> Red </option>
+                    <option value="green"> Green </option>
+                    <option value="blue"> Blue </option>    
+                </select> <br>
+                <br>
+                
+                <label for="message"> Message:</label>
+                <textarea id="message" name="message" rows="5" cols="40" required></textarea> <br>
+                <br>
+
+                <label for="subscribe"> Subscribe </label>
+                <input type="checkbox" id="subscribe" name="subscribe" value="yes">
+                <br>
+
+            </fieldset>
+            <button types="submit"> Submit </button>
+        </form>
+    
     </body>
 </html>

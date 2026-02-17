@@ -32,5 +32,4 @@ function goToWiki() {
 
 function epicButton() {
     window.alert("epic alert");
-    
 }

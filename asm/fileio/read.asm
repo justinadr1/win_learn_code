@@ -3,8 +3,6 @@
 ; Windows x64 NASM
 ; ============================
 
-default rel
-
 extern CreateFileA
 extern ReadFile
 extern WriteFile
@@ -38,7 +36,7 @@ main:
     mov rcx, filename          
     mov rdx, GENERIC_READ       
     xor r8, r8                  
-    xor r9, r9                
+    xor r9, r9                  
 
     mov qword [rsp+32], OPEN_EXISTING
     mov qword [rsp+40], FILE_ATTRIBUTE_NORMAL

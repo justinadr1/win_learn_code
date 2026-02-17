@@ -14,6 +14,6 @@ class FileLogger:
         return False
 
 
-with FileLogger("log.txt") as f:  # f becomes whatever __enter__ returns
+with FileLogger("log.txt") as f:  
     print(f.read())
 

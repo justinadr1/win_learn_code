@@ -3,10 +3,7 @@
 cl /c dynamicapi.c
 link /DLL dynamicapi.obj user32.lib
 
-
 cl main.c dynamicapi.lib
-
-
 
 cl /c staticapi.c
 lib staticapi.obj user32.lib

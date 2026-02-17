@@ -1,8 +1,3 @@
-nasm -f win64 dynamic.asm -o dynamic.obj
-nasm -f win64 dllmain.asm -o dllmain.obj
-link /DLL /OUT:dynamic.dll dynamic.obj dllmain.obj /DEF:dynamic.def /ENTRY:DllMain /MACHINE:X64
+link epic.obj /DLL /DEF:epic.def kernel32.lib msvcrt.lib
 
 
-
-nasm -f win64 main.asm -o main.obj
-link main.obj /SUBSYSTEM:CONSOLE /ENTRY:main kernel32.lib

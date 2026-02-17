@@ -1,20 +1,14 @@
-; main.asm
+bits 64
 default rel
-extern _myDynamicFunction    ; Import from DLL
-extern _ExitProcess@4
-section .data
-a dq 5
-b dq 7
-result dq 0
+
+extern _epicFunction
+extern ExitProcess
 
 section .text
-global main
-main:
-    mov rcx, [a]            ; first arg
-    mov rdx, [b]            ; second arg
-    call _myDynamicFunction
-    mov [result], rax       ; store return value
+    global main
 
-    ; Exit program: Windows API ExitProcess
-    mov rcx, 0              ; exit code 0
-    call _ExitProcess
+main:
+    sub rsp, 40
+    call _epicFunction
+    xor ecx, ecx
+    call ExitProcess

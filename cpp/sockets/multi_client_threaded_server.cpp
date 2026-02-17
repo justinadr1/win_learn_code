@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <thread>
 
+#pragma comment(lib, "ws2_32.lib")
+
 constexpr const char* PORT = "8888";
 constexpr int BUFFER_SIZE = 512;
 
@@ -23,23 +25,22 @@ private:
     WSADATA wsa{};
 };
 
-void handle_client(SOCKET client_sock)
+void handle_client(SOCKET client_sock, uint16_t client_port)
 {
     char buffer[BUFFER_SIZE];
     int recv_size;
 
-    std::cout << "[+] Client thread started\n";
+    std::cout << "[+] Client[" << client_port << "] connected\n";
 
     while ((recv_size = recv(client_sock, buffer, BUFFER_SIZE - 1, 0)) > 0)
     {
         buffer[recv_size] = '\0';
-        std::cout << "Client: " << buffer << '\n';
+        std::cout << "Client [" << client_port << "]: " << buffer << '\n';
 
-        // Echo back
         send(client_sock, buffer, recv_size, 0);
     }
 
-    std::cout << "[-] Client disconnected\n";
+    std::cout << "[-] Client [" << client_port << "] disconnected\n";
     closesocket(client_sock);
 }
 
@@ -54,7 +55,8 @@ int main()
         hints.ai_socktype = SOCK_STREAM;
         hints.ai_flags    = AI_PASSIVE;
 
-        getaddrinfo(nullptr, PORT, &hints, &res);
+        if (getaddrinfo(nullptr, PORT, &hints, &res) != 0)
+            throw std::runtime_error("getaddrinfo failed");
 
         SOCKET listen_sock = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
         if (listen_sock == INVALID_SOCKET)
@@ -72,14 +74,24 @@ int main()
 
         while (true)
         {
-            SOCKET client_sock = accept(listen_sock, nullptr, nullptr);
+            sockaddr_in client_addr{};
+            int addr_len = sizeof(client_addr);
+
+            SOCKET client_sock = accept(
+                listen_sock,
+                reinterpret_cast<sockaddr*>(&client_addr),
+                &addr_len
+            );
+
             if (client_sock == INVALID_SOCKET)
             {
                 std::cerr << "Accept failed\n";
                 continue;
             }
 
-            std::thread(handle_client, client_sock).detach();
+            uint16_t client_port = ntohs(client_addr.sin_port);
+
+            std::thread(handle_client, client_sock, client_port).detach();
         }
 
         closesocket(listen_sock);

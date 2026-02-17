@@ -22,7 +22,7 @@ DWORD WINAPI client_thread(LPVOID arg)
         send(client_sock, buffer, recv_size, 0);
     }
 
-    printf("Client disconnected (thread %llu)\n", (unsigned long long)GetCurrentThreadId());
+    printf("[-] Client [%llu] disconnected\n", (unsigned long long)GetCurrentThreadId());
 
     closesocket(client_sock);
     return 0;
@@ -56,7 +56,7 @@ int main()
         if (client_sock == INVALID_SOCKET)
             continue;
 
-        printf("Client connected\n");
+        printf("[+] Client [%llu] connected\n", (unsigned long long)GetCurrentThreadId());
 
         HANDLE thread = CreateThread(NULL, 0, client_thread, (LPVOID)client_sock, 0, NULL);
 
