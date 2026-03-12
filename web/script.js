@@ -1,35 +1,18 @@
-
-let x = 0;
-let i = 0;
-function clicked() {
-    const colors = ["red", "green", "blue", "yellow", "black"]
-    if (i == 5) {
-        i = 0;
-    }
-    const el = document.getElementById("clicked");
-    el.style.color = colors[i];
-    document.getElementById("clicked").textContent = ++x;
-    console.log(i++);
-}
-
-function mysteryButton() {
-    window.alert("hello world");
-    window.setTimeout(() =>
-        {
-            const el = document.getElementById("clicked").textContent = "mystery text";
-            console.log("faahhh");
-        }, 
-        2000 // milliseconds
-    );
-    console.log("Viewport width", window.innerWidth);
-    
-}
-
-function goToWiki() {
-    window.location.href = "https://wikipedia.com";
-
-}
-
-function epicButton() {
-    window.alert("epic alert");
-}
+function printUsers()
+{
+    fetch('http://127.0.0.1/users.txt')
+        .then(response => {
+            if (!response.ok) 
+                throw new Error("Could not fetch file");
+            return response.text();
+        })
+        .then(data => {
+            const display = document.getElementById('user-display');
+            display.innerText = data; 
+            console.log("User data injected successfully");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('user-display').innerText = "Failed to load users.";
+        });
+}  
