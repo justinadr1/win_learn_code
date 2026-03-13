@@ -1,6 +1,6 @@
 <html>
     <head>
-        <link rel="stylesheet" href="style.css">    
+        <link rel="stylesheet" href="style.css?v=1.3">    
     </head>
     <body>
         <h1 class="header"> 
@@ -10,12 +10,37 @@
         <button onclick="printUsers()">
             Print users
         </button>
-
         <div id="user-display" class="user-display-class">
-            Users will appear here...
+            Users will appear here
+        </div>
+        <div>
+            <input type="text" id="user-input-php">
+            <button onclick="addUserPHP()">Add user using PHP </button>
+        </div>
+        <div>
+            <input type="text" id="user-input-node">
+            <button onclick="addUserNode()">Add user using Node </button>
         </div>
 
-        <script src="script.js?v=1.0"> </script>
+
+        <br> <br> <br>
+
+
+        <button onclick="printUsersMySQLNode()">
+            Print users from MySQL using Node
+        </button>
+        <button onclick="printUsersMySQLPHP()">
+            Print users from MySQL using PHP
+        </button>
+        <div id="user-display-mysql" class="user-display-mysql-class">
+            Users from MySQL will appear here
+        </div>
+        <div>
+            <input type="text" id="user-input-mysql-node">
+            <button onclick="addUserMySQLNode()"> Add user to MySQl using Node </button>
+        </div>
+
+        <script src="script.js?v=1.2"> </script>
 
     </body>
 </html>

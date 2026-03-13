@@ -4,49 +4,61 @@ extern printf
 extern ExitProcess
 
 section .data
-    fmt db "fib(%d) = %lld", 10, 0
-    n   dd 10                ; compute fib(10)
-    x   dd 5588019
-
+    num db "%i", 0
+    lst db 10, 0
+    nxt db ", ", 0   
+    
 section .text
 global main
 
-main:
-    sub rsp, 40              ; shadow space + alignment
-    
-    mov ecx, [n]             ; n
-    call fib                 ; RAX = fib(n)
-    nop
-    nop
-    ; printf("fib(%d) = %lld\n", n, result)
-    lea rcx, [fmt]           ; format
-    mov edx, [n]             ; int n
-    mov r8, rax              ; result
-    xor r9d, r9d
-    call printf
-
-    xor ecx, ecx
-    call ExitProcess
-
-; ---------------------------------------
-; long long fib(int n)
-; RCX = n
-; RAX = result
-; ---------------------------------------
 fib:
-    xor rax, rax             ; a = 0
-    mov rbx, 1               ; b = 1
+    push rbp
+    mov rbp, rsp
+    sub rsp, 48
+
+    mov dword [rbp-4], 0
+    mov dword [rbp-8], 1
+    mov dword [rbp-16], 0
 
 .loop:
-    test ecx, ecx
-    jz .done
+    cmp dword [rbp-16], 10
+    jge .exit
+    
+    lea rcx, [num]
+    mov edx, [rbp-4]
+    call printf
 
-    mov rdx, rax
-    add rdx, rbx             ; t = a + b
-    mov rax, rbx             ; a = b
-    mov rbx, rdx             ; b = t
-    dec ecx
+    cmp dword [rbp-16], 9
+    jne .continue
+
+    lea rcx, [lst]
+    call printf
+    jmp .exit
+
+.continue:
+    lea rcx, [nxt]
+    call printf
+    
+    mov eax, dword [rbp-4]
+    add eax, dword [rbp-8]
+    mov dword [rbp-12], eax
+
+    mov eax, [rbp-8]
+    mov dword [rbp-4], eax
+
+    mov eax, dword [rbp-12]
+    mov dword [rbp-8], eax
+
+    inc dword [rbp-16]
     jmp .loop
 
-.done:
+.exit:
+    add rsp, 48
+    pop rbp
     ret
+
+main:
+    sub rsp, 40              
+    call fib                
+    xor ecx, ecx
+    call ExitProcess

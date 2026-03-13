@@ -2,50 +2,69 @@
 #include <stdio.h>
 
 
-struct Node
+typedef struct Node_
 {
     unsigned int val;
-    struct Node* bot;
-};
+    struct Node_* bot;
+} Node;
 
-struct Stack
+typedef struct Stack_
 {
-    struct Node* top;
-};
+    Node* top;
+} Stack;
 
-unsigned int pop(struct Stack* stack)
+void push_stack(Stack* stack, int a)
 {
-    if (!stack->top)
-        return 0;
-    struct Node* t = stack->top;
-    int a = t->val;
-    stack->top = t->bot;
-    free(t);
-    return a;
-}
-
-void push(struct Stack* stack, int a)
-{
-    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    Node* node = (Node*)malloc(sizeof(Node));
     node->val = a;
     node->bot = stack->top;
     stack->top = node;
 }
 
-void printAll(struct Stack* stack)
+unsigned int pop_stack(Stack* stack)
 {
     if (!stack->top)
+    {
+        printf("Stack is emtpy\n");
+        return 0;
+    }
+
+    Node* tmp = stack->top;
+    int out = tmp->val;
+    stack->top = tmp->bot;
+    free(tmp);
+    return out;
+}
+
+int peek_stack(Stack* stack)
+{
+    if (!stack->top)
+    {
+        printf("stack is empty\n");
+        return 0;
+    }
+    return stack->top->val;
+}
+
+void print_stack(Stack* stack)
+{
+    if (!stack->top)
+    {
+        printf("Stack is empty\n");
         return;
+    }
 
     printf("%u <- top\n", stack->top->val);
 
-    for (struct Node* t = stack->top->bot; t != NULL; t = t->bot)
+    Node* node = stack->top->bot;
+    while (node)
     {
-        printf("%u\n", t->val);
+        printf("%u\n", node->val);
+        node = node->bot;
     }
 }
 
-void cleanup(struct Stack* stack)
+void free_stack(Stack* stack)
 {
     while (stack->top)
     {
@@ -57,20 +76,20 @@ void cleanup(struct Stack* stack)
 
 int main(void)
 {
-    struct Stack stack = { NULL };
+    Stack stack = { NULL };
 
-    push(&stack, 400);
-    push(&stack, 500);
-    push(&stack, 600);
-    push(&stack, 700);
+    push_stack(&stack, 400);
+    push_stack(&stack, 500);
+    push_stack(&stack, 600);
+    push_stack(&stack, 700);
 
-    printAll(&stack);
+    print_stack(&stack);
 
     printf("\n");
 
-    printf("popped: %u\n\n", pop(&stack));
+    printf("popped: %u\n\n", pop_stack(&stack));
 
-    printAll(&stack);
+    print_stack(&stack);
 
-    cleanup(&stack);
+    free_stack(&stack);
 }

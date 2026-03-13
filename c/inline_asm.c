@@ -1,4 +1,4 @@
-// for x86 arch only
+// for x86 only
 #include <stdio.h>
 
 int main() 

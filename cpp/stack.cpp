@@ -19,19 +19,6 @@ public:
 
     Stack() : top(nullptr) {}
 
-    bool empty() const { return top == nullptr; }
-
-    unsigned int pop()
-    {
-        if (!top)
-            return 0;
-        unsigned int a = top->value;
-        Node* t = top;
-        top = top->bot;
-        delete t;
-        return a;
-    }
-
     void push(int x)
     {
         Node* node = new Node(x); 
@@ -39,10 +26,27 @@ public:
         top = node;
     }
 
-    void printStack()
+    unsigned int pop()
     {
         if (!top)
+        {
+            cout << "stack is empty\n";
+            return 0;
+        }
+        Node* tmp = top;
+        unsigned int out = tmp->value;
+        top = tmp->bot;
+        delete tmp;
+        return out;
+    }
+
+    void print_stack()
+    {
+        if (!top)
+        {
+            cout << "stack is empty\n";
             return;
+        }
 
         cout << top->value << " <- top" << endl;
         
@@ -54,9 +58,10 @@ public:
 
     ~Stack()
     {
-        while (!empty())
+        while (top)
+        {
             pop();
-        
+        }
     }
 };
 
@@ -68,10 +73,10 @@ int main()
     stack.push(400);
     stack.push(500);
     stack.push(600);
-
-    stack.printStack();
+    stack.push(700);
+    
+    stack.print_stack();
 
     stack.pop();
-    stack.printStack();
-
+    stack.print_stack();
 }

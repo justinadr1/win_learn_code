@@ -1,0 +1,25 @@
+
+npm init -y
+npm install express body-parser mysql2 cors
+
+
+
+IF USING NGINX
+Terminal 1:
+nginx
+
+Terminal 2:
+node server.js
+
+Terminal 3:
+php-cgi.exe -b 127.0.0.1:9000
+
+
+
+IF USING APACHE
+Terminal 1:
+httpd
+
+Terminal 2:
+
+node server.js

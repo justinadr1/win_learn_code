@@ -26,7 +26,7 @@ class Stack:
         self.top = tmp.bot
         return val
 
-    def print_all(self):
+    def print(self):
         print(f"{self.top.val} <- top")
         node = self.top.bot
         while node:
@@ -43,10 +43,12 @@ stack = Stack()
 stack.push(400)
 stack.push(500)
 stack.push(600)
-stack.print_all()
+stack.push(700)
+
+stack.print()
 print()
 
 y = stack.pop()
-stack.print_all()
+stack.print()
 print()
 

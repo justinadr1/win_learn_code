@@ -13,25 +13,13 @@ typedef struct Queue_
     Node* rear;
 } Queue;
 
-Queue QueueInit()
-{
-    Queue tmp;
-    tmp.front = NULL;
-    tmp.rear = NULL;
-    return tmp;
-}
 
-int QueueEmpty(Queue* q)
-{
-    return !q->front;
-}
-
-void Enqueue(Queue* q, int a)
+void enqueue(Queue* q, int a)
 {
     Node* node = (Node*)malloc(sizeof(Node));
     node->val = a;
     node->next = NULL;
-    if (QueueEmpty(q))
+    if (!q->front)
     {
         q->front = q->rear = node;
     }
@@ -42,9 +30,9 @@ void Enqueue(Queue* q, int a)
     }
 }
 
-int Dequeue(Queue* q)
+int dequeue(Queue* q)
 {
-    if (QueueEmpty(q))
+    if (!q->front)
     {
         printf("Cannot dequeue, its empty\n");
         return 0;
@@ -61,9 +49,9 @@ int Dequeue(Queue* q)
     return out;
 }
 
-int PeekFront(Queue* q)
+int peek_front(Queue* q)
 {
-    if (QueueEmpty(q))
+    if (!q->front)
     {
         printf("Cannot get front, its empty\n");
         return 0;
@@ -71,9 +59,9 @@ int PeekFront(Queue* q)
     return q->front->val;
 }
 
-int PeekRear(Queue* q)
+int peek_rear(Queue* q)
 {
-    if (QueueEmpty(q))
+    if (!q->rear)
     {
         printf("Cannot get rear, its empty\n");
         return 0;
@@ -81,9 +69,9 @@ int PeekRear(Queue* q)
     return q->rear->val;
 }
 
-void PrintQueue(Queue* q)
+void print_queue(Queue* q)
 {
-    if (QueueEmpty(q))
+    if (!q->front)
     {
         printf("Cannot print queue, its empty\n");
         return;
@@ -103,7 +91,7 @@ void PrintQueue(Queue* q)
     }
 }
 
-void QueueFree(Queue* q)
+void free_queue(Queue* q)
 {
     while (q->front)
     {
@@ -116,20 +104,27 @@ void QueueFree(Queue* q)
 
 int main()
 {
-    Queue line = QueueInit();
+    Queue line = { NULL, NULL };
     
-    Enqueue(&line, 400);
-    Enqueue(&line, 500);
-    Enqueue(&line, 600);
-    Enqueue(&line, 700);
+    enqueue(&line, 400);
+    enqueue(&line, 500);
+    enqueue(&line, 600);
+    enqueue(&line, 700);
+    enqueue(&line, 800);
 
-    PrintQueue(&line);
+    int front = peek_front(&line);
+    printf("%i <- front\n", front);
+    int rear = peek_rear(&line);
+    printf("%i <- rear\n\n", rear);
 
-    int out = Dequeue(&line);
-    printf("\n%i <- dequeue'd\n\n", out);
+    print_queue(&line);
 
-    PrintQueue(&line);
-    
-    QueueFree(&line);
+    int out = dequeue(&line);
+    printf("\n%i <- dequeue\n", out);
+
+    int front2 = peek_front(&line);
+    printf("%i <- front\n", front2);
+
+    free_queue(&line);
 }
 

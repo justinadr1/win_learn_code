@@ -1,5 +1,5 @@
 .header {
-   color: blue;
+   color: rgba(159, 139, 58, 0.775);
    text-align: center;
    font-family:'Courier New', Courier, monospace;
    font-size: 44px;
@@ -11,4 +11,23 @@
    border: 1px solid #ccc;
    padding: 10px;
    margin-top: 10px;
+}
+
+
+.user-display-mysql-class {
+   white-space: pre;
+   font-family: monospace;
+   border: 1px solid #ccc;
+   padding: 10px;
+   margin-top: 10px;
+}
+
+button {
+   font-family: monospace;
+   border: 1px solid black;
+   padding: 5px;
+}
+button:hover {
+   cursor: pointer;
+   background-color: #87ceeb;
 }

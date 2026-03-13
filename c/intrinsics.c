@@ -15,7 +15,6 @@ int main(void)
 
     __fastfail(FAST_FAIL_CORRUPT_LIST_ENTRY);
 
-
     uint16_t port = 0x378;
     uint8_t data;
     data  = __inbyte(port);

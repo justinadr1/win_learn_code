@@ -36,7 +36,7 @@ class Queue:
             return None
         return self.front.val
 
-    def print_all(self):
+    def print(self):
         if self.empty():
             print("Queue empty")
             return
@@ -55,21 +55,12 @@ class Queue:
 line = Queue()
 
 line.enqueue(400)
-line.print_all()
-print()
-
 line.enqueue(500)
-line.print_all()
-print()
-
 line.enqueue(600)
-line.print_all()
-print()
-
 line.enqueue(700)
-line.print_all()
-print()
+line.print()
 
 x = line.dequeue()
-line.print_all()
+
+line.print()
 print()
