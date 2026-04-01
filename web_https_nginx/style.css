@@ -29,20 +29,3 @@ button:hover {
    border: 1px solid #ccc;
    padding: 5px;
 }
-
-.user-display-class {
-   white-space: pre;
-   font-family: monospace;
-   border: 1px solid #ccc;
-   padding: 10px;
-   margin-top: 10px;
-}
-
-
-.user-display-mysql-class {
-   white-space: pre;
-   font-family: monospace;
-   border: 1px solid #ccc;
-   padding: 10px;
-   margin-top: 10px;
-}

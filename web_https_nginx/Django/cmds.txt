@@ -1,5 +1,5 @@
 
-pip install django django-cors-headers
+pip install django django-cors-headers mysqlclient
 
 django-admin startproject myproject .
 

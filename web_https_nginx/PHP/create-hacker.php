@@ -4,49 +4,25 @@ header("Content-Type: application/json");
 
 $data = json_decode(file_get_contents("php://input"), true);
 $name = $data['name'] ?? '';
-
+$expertise = $data['expertise'] ?? 'General Hacker';
 if (empty($name)) {
-    echo "Error: Name is empty";
+    echo json_encode(["status" => "error", "message" => "Name is required"]);
     exit;
 }
 
 $conn = new mysqli("127.0.0.1", "root", "", "learnweb");
-
 if ($conn->connect_error) {
-    die("Database Connection failed: " . $conn->connect_error);
+    echo json_encode(["status" => "error", "message" => "Connection failed"]);
+    exit;
 }
 
-$stmt = $conn->prepare("INSERT INTO hackers (name_) VALUES (?)");
-$stmt->bind_param("s", $name);
+$stmt = $conn->prepare("INSERT INTO hackers (name_, expertise) VALUES (?, ?)");
+$stmt->bind_param("ss", $name, $expertise);
 
 if ($stmt->execute()) {
-    $targetDir = "../hacker/" . $name; 
-    
-    if (!file_exists($targetDir)) {
-        mkdir($targetDir, 0777, true); 
-    }
-
-    $filePath = $targetDir . "/index.html";
-    
-    $htmlContent = "
-    <html>
-    <head>
-    </head>
-    <body style='background:#000; color:#0f0; font-family:monospace; padding:20px;'>
-        <h1> Hacker $name created via PHP </h1>
-        <hr>
-        <a href='/hacker.html' style='color:#0f0;'> [ Back ] </a>
-    </body>
-    </html>";
-
-    if (file_put_contents($filePath, $htmlContent)) {
-        echo "Created /hacker/$name/index.html";
-    } else {
-        echo "DB Success, but file write failed. Check Apache permissions.";
-    }
-
+    echo json_encode(["status" => "success", "message" => "Hacker $name created via PHP."]);
 } else {
-    echo "Database Error: " . $stmt->error;
+    echo json_encode(["status" => "error", "message" => "DB Error: " . $stmt->error]);
 }
 
 $stmt->close();

@@ -1,23 +1,30 @@
 async function createHackerPHP() {
-    const input = document.getElementById('input-hacker');
-    const name = input.value;
+    const nameInput = document.getElementById('input-hacker');
+    const expInput = document.getElementById('input-expertise');
     const status = document.getElementById('status');
-    if (!name) {
-        status.innerText = "Enter a name";
+
+    const name = nameInput.value;
+    const expertise = expInput.value;
+
+    if (!name || !expertise) {
+        status.innerText = "Enter both name and expertise";
         return;
     }
-    try { 
-        const response = await fetch('PHP/create-hacker.php?v=1', {
+
+    try {
+        const response = await fetch('/PHP/create-hacker.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name })
+            body: JSON.stringify({ name, expertise })
         });
-        const result = await response.text();
-        status.innerText = result;
-        input.value = '';        
+        const result = await response.json();
+        status.innerText = result.message;
+        
+        nameInput.value = '';
+        expInput.value = '';
         getHackersNode();
     } catch (error) {
-        status.innerText = "PHP connection failed";
+        status.innerText = "PHP API connection failed";
     }
 }
 
@@ -85,6 +92,22 @@ async function createHackerDjango() {
     }
 }
 
+async function deleteHackerNode(name) {
+    const status = document.getElementById('status');
+    if (!confirm(`Are you sure you want to delete ${name}?`))
+        return;
+
+    try {
+        const response = await fetch(`/node-api/delete-hacker/${encodeURIComponent(name)}`, {
+            method: 'DELETE'
+        });
+        const result = await response.text();
+        status.innerText = result;
+        getHackersNode();
+    } catch (error) {
+        status.innerText = "Delete request failed";
+    }
+}
 
 async function getHackersNode() {
     const list = document.getElementById('list-hackers');
@@ -103,6 +126,7 @@ async function getHackersNode() {
             item.innerHTML = `
                 <strong> Name: </strong> ${hacker.name_}
                 | <a href="/hacker/${hacker.name_}" target="_blank"> View Profile </a>
+                | <button onclick="deleteHackerNode('${hacker.name_}')"> Delete </button>
             `;
             list.appendChild(item);
         });

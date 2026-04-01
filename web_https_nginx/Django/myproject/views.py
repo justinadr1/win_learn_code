@@ -1,19 +1,21 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-import os
-
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.db import connection  # Required for raw SQL
 
 @csrf_exempt
 def create_hacker(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         expertise = request.POST.get('expertise')
-        
+
         if name and expertise:
-            # Here you would typically save to your DB using Django Models
-            # For now, we return a success message
-            return HttpResponse(f"Hacker {name} created via Django!")
-            
-    return HttpResponse("Invalid request", status=400)
+            try:
+                with connection.cursor() as cursor:
+                    sql = "INSERT INTO hackers (name_, expertise) VALUES (%s, %s)"
+                    cursor.execute(sql, [name, expertise])
+                
+                return HttpResponse(f"Hacker {name} created via Django!")
+            except Exception as e:
+                return HttpResponse(f"Database error: {str(e)}", status=500)
+
+    return HttpResponse("Invalid request: Ensure name and expertise are provided", status=400)

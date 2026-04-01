@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'learnweb',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
@@ -125,3 +129,12 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+from django.db.backends.mysql.base import DatabaseWrapper
+
+# This defines a dummy function that does nothing
+def patched_check_version(self):
+    pass
+
+# This replaces the strict version check with our dummy function
+DatabaseWrapper.check_database_version_supported = patched_check_version
