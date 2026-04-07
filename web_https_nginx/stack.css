@@ -1,0 +1,30 @@
+body { font-family: 'Courier New', monospace; background: #1a1a1a; color: #00ff00; padding: 20px; }
+.container-wrapper { display: flex; gap: 20px; }
+#stack-container { border: 2px solid #333; padding: 10px; min-width: 300px; min-height: 400px; }
+
+.stack-node { 
+    border: 1px solid #00ff00; margin: 5px 0; padding: 10px; 
+    background: #222; position: relative; overflow: hidden;
+}
+
+/* The Visual "Overflow" Effect */
+.corrupted { 
+    border: 2px solid #ff0000 !important; 
+    background: #441111 !important; 
+    color: #ff4444;
+    animation: flicker 0.2s infinite;
+}
+
+@keyframes flicker {
+    0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; }
+}
+
+.mem-label { font-size: 0.8em; color: #888; display: block; }
+.status-box { margin: 20px 0; padding: 10px; border: 1px solid #444; background: #000; }
+#status { font-weight: bold; }
+.crash { color: #ff0000; text-transform: uppercase; font-size: 1.5em; }
+
+input, button { 
+    background: #000; color: #00ff00; border: 1px solid #00ff00; 
+    padding: 10px; margin-bottom: 10px; cursor: pointer;
+}

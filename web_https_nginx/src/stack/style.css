@@ -11,14 +11,6 @@ body {
 input {
     padding: 5px;
 }
-button { 
-    padding: 5px 10px; 
-    margin: 2px 0; 
-}
-button:hover { 
-    background-color: #ccc; 
-    cursor: pointer; 
-}
 #status { 
     color: #666; 
     font-style: italic;
